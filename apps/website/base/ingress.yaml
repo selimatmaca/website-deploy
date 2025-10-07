@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: website
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"   # HTTP çalışıyoruz
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: website.configland.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: website
+            port:
+              number: 80

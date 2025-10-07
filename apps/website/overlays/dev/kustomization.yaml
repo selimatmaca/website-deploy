@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+nameSuffix: -dev
+namespace: default
 resources:
-  - deployment.yaml
-  - service.yaml
-  - ingress.yaml
+  - ../../base
 images:
   - name: selimica/website-app
     newName: selimica/website-app
-    newTag: "0.0.0"
+    newTag: "latest"   # veya Jenkins build numarası
