@@ -1,0 +1,8 @@
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - env.yaml
+  - postgres.yaml
+patches:
+  - path: patch-env.yaml
