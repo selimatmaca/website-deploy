@@ -18,17 +18,17 @@ spec:
           claimName: staticfiles
       containers:
       - name: app
-        image: selimica/website-app:latest
-        volumeMounts:
-        - mountPath: "/static"
-          name: staticfiles
-        ports:
-        - containerPort: 8000
-        envFrom:
-        - secretRef:
-            name: app-secret
-        - configMapRef:
-            name: app-configmap
+      image: selimica/website-app:latest
+      volumeMounts:
+      - mountPath: "/static"
+        name: staticfiles
+      ports:
+      - containerPort: 8000
+      envFrom:
+      - secretRef:
+          name: app-secret
+      - configMapRef:
+          name: app-configmap
 ---
 apiVersion: v1
 kind: Service
@@ -49,7 +49,7 @@ metadata:
   name: staticfiles
 spec:
   accessModes:
-    - ReadWriteMany
+  - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
