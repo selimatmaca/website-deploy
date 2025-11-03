@@ -1,0 +1,54 @@
+#db-statefulset-service.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-statefulset
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: postgres:15.1-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          valueFrom: { secretKeyRef: { name: db-secret, key: POSTGRES_DB } }
+        - name: POSTGRES_USER
+          valueFrom: { secretKeyRef: { name: db-secret, key: POSTGRES_USER } }
+        - name: POSTGRES_PASSWORD
+          valueFrom: { secretKeyRef: { name: db-secret, key: POSTGRES_PASSWORD } }
+        volumeMounts:
+        - name: postgrespvc
+          mountPath: /var/lib/postgresql/data    # <- default dizine mount
+  volumeClaimTemplates:
+  - metadata:
+      name: postgrespvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: nfs-client                # <- NFS SC
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+
+    
+

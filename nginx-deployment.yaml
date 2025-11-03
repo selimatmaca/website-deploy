@@ -1,0 +1,46 @@
+#nginx-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+        - name: staticfiles
+          persistentVolumeClaim:
+            claimName: staticfiles
+        - name: nginx-conf
+          configMap:
+            name: nginx-configmap
+            items:
+              - key: default.conf
+                path: default.conf
+      containers:
+        - name: nginx
+          image: selimica/website-nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: "/static"
+              name: staticfiles
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80

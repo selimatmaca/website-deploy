@@ -1,0 +1,57 @@
+#app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      volumes:
+      - name: staticfiles
+        persistentVolumeClaim:
+          claimName: staticfiles
+      containers:
+      - name: app
+        image: selimica/website-app:latest
+        volumeMounts:
+        - mountPath: "/static"
+          name: staticfiles
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: app-secret
+        - configMapRef:
+            name: app-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # nginx configmap upstream'u servis adı "app"ı bekliyor
+  name: app
+spec:
+  selector:
+    app: app
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+# We create a PVC named staticfiles. Both nginx and app will mount this PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: staticfiles
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-client

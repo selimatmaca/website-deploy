@@ -1,0 +1,14 @@
+#app-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  database_url: db-service
+  DJANGO_ALLOWED_HOSTS: "*"
+  DJANGO_LOGLEVEL: "info"
+  DEBUG: "True"
+  SQL_ENGINE: django.db.backends.postgresql
+  SQL_DATABASE: webdb
+  SQL_HOST: db-service
+  SQL_PORT: "5432"
