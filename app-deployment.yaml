@@ -1,4 +1,3 @@
-#app-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,7 +18,7 @@ spec:
           claimName: staticfiles
       containers:
       - name: app
-        image: selimica/website-app:latest
+        image: selimica/django-web-app:latest
         volumeMounts:
         - mountPath: "/static"
           name: staticfiles
@@ -43,7 +42,7 @@ spec:
   - port: 8000
     targetPort: 8000
 ---
-# We create a PVC named staticfiles. Both nginx and app will mount this PVC
+# Aynı dosyada ikinci bir belge olarak PVC'yi tutuyoruz (ayrı dosya yok)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

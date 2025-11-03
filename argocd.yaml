@@ -1,17 +1,17 @@
-#overlays/dev/argocd.yaml
+#argocd.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: django-argo-application-dev
+  name: django-argo
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/selimatmaca/website-deploy.git
     targetRevision: HEAD
-    path: .
+    path: . 
   destination:
-    server: https://kubernetes.default.svc   # <- ArgoCD is in K8s cluster. So This points cluster’ın API server address
+    server: https://k8s.configland.com
     namespace: default
   syncPolicy:
     syncOptions:
