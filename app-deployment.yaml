@@ -29,28 +29,4 @@ spec:
           name: app-secret
       - configMapRef:
           name: app-configmap
----
-apiVersion: v1
-kind: Service
-metadata:
-  # nginx configmap upstream'u servis adı "app"ı bekliyor
-  name: app
-spec:
-  selector:
-    app: app
-  ports:
-  - port: 8000
-    targetPort: 8000
----
-# Aynı dosyada ikinci bir belge olarak PVC'yi tutuyoruz (ayrı dosya yok)
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: staticfiles
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: nfs-client
+
