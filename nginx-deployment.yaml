@@ -24,7 +24,7 @@ spec:
             path: default.conf
       containers:
       - name: nginx
-        image: selimica/website-nginx:latest
+        image: selimica/website-nginx:37
         ports:
         - containerPort: 80
         volumeMounts:
