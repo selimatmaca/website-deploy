@@ -11,7 +11,7 @@ spec:
     targetRevision: HEAD
     path: . 
   destination:
-    server: https://k8s.configland.com
+    server: https://kubernetes.default.svc
     namespace: default
   syncPolicy:
     syncOptions:
