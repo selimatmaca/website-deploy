@@ -19,7 +19,7 @@ spec:
           claimName: staticfiles
       containers:
       - name: app
-        image: selimica/website-app:37
+        image: selimica/website-app:38
         volumeMounts:
         - mountPath: "/static"
           name: staticfiles
